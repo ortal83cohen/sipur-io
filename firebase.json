@@ -6,21 +6,6 @@
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
   },
-//  "functions": [
-//    {
-//      "source": "functions",
-//      "codebase": "default",
-//      "ignore": [
-//        "node_modules",
-//        ".git",
-//        "firebase-debug.log",
-//        "firebase-debug.*.log"
-//      ],
-//      "predeploy": [
-//        "npm --prefix \"$RESOURCE_DIR\" run lint"
-//      ]
-//    }
-//  ],
   "hosting": {
     "public": "build/web",
     "ignore": [
@@ -40,6 +25,17 @@
   },
   "remoteconfig": {
     "template": "remoteconfig.template.json"
-  }
-//  "extensions": {}
+  },
+  "functions": [
+    {
+      "source": "sipur",
+      "codebase": "sipur",
+      "ignore": [
+        "venv",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log"
+      ]
+    }
+  ]
 }

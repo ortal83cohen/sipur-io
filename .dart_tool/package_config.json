@@ -62,6 +62,18 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "flutter_web_plugins",
+      "rootUri": "file:///Users/ortalcohen/flutter/packages/flutter_web_plugins",
+      "packageUri": "lib/",
+      "languageVersion": "3.2"
+    },
+    {
+      "name": "go_router",
+      "rootUri": "file:///Users/ortalcohen/.pub-cache/hosted/pub.dev/go_router-13.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
+    },
+    {
       "name": "leak_tracker",
       "rootUri": "file:///Users/ortalcohen/.pub-cache/hosted/pub.dev/leak_tracker-10.0.0",
       "packageUri": "lib/",
@@ -84,6 +96,12 @@
       "rootUri": "file:///Users/ortalcohen/.pub-cache/hosted/pub.dev/lints-3.0.0",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "logging",
+      "rootUri": "file:///Users/ortalcohen/.pub-cache/hosted/pub.dev/logging-1.2.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
     },
     {
       "name": "matcher",
@@ -170,7 +188,7 @@
       "languageVersion": "3.3"
     }
   ],
-  "generated": "2024-03-08T08:58:05.817873Z",
+  "generated": "2024-03-09T18:48:50.450645Z",
   "generator": "pub",
   "generatorVersion": "3.3.0"
 }
