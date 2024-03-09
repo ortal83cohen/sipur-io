@@ -40,6 +40,30 @@
   <script src="flutter.js" defer></script>
 </head>
 <body>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyBJ1w1tvTUPugjUt1TRuLgBII-hc5qhNWk",
+    authDomain: "sipur-ai.firebaseapp.com",
+    databaseURL: "https://sipur-ai-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "sipur-ai",
+    storageBucket: "sipur-ai.appspot.com",
+    messagingSenderId: "209098881200",
+    appId: "1:209098881200:web:8c5708b5c1a892dc82a375",
+    measurementId: "G-FG37ZLV98N"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
   <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
@@ -55,29 +79,6 @@
       });
     });
   </script>
-  <script type="module">
-    // Import the functions you need from the SDKs you need
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
-    // TODO: Add SDKs for Firebase products that you want to use
-    // https://firebase.google.com/docs/web/setup#available-libraries
 
-    // Your web app's Firebase configuration
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-      apiKey: "AIzaSyBJ1w1tvTUPugjUt1TRuLgBII-hc5qhNWk",
-      authDomain: "sipur-ai.firebaseapp.com",
-      databaseURL: "https://sipur-ai-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId: "sipur-ai",
-      storageBucket: "sipur-ai.appspot.com",
-      messagingSenderId: "209098881200",
-      appId: "1:209098881200:web:8c5708b5c1a892dc82a375",
-      measurementId: "G-FG37ZLV98N"
-    };
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
-  </script>
 </body>
 </html>
