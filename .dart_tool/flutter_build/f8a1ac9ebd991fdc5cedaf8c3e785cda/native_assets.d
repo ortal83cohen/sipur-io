@@ -1,0 +1,1 @@
+ /Users/ortalcohen/Documents/GitHub/sipur-io/.dart_tool/flutter_build/f8a1ac9ebd991fdc5cedaf8c3e785cda/native_assets.yaml: 

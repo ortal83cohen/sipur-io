@@ -40,7 +40,7 @@
 //   @override
 //   void initState() {
 //     openAI = OpenAI.instance.build(
-//         token: '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',
+//         token: todo,
 //         baseOption: HttpSetup(receiveTimeout: const Duration(seconds: 15)),
 //         enableLog: true);
 //     super.initState();

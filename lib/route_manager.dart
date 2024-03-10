@@ -4,13 +4,13 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sipur/console_screen.dart';
-import 'package:sipur/error_screen.dart';
-import 'package:sipur/home_screen.dart';
+import 'package:sipur/screens/console_screen.dart';
+import 'package:sipur/screens/error_screen.dart';
+import 'package:sipur/screens/home_screen.dart';
 
 class RouteManager {
   static String home = "/";
-  static String console = "console";
+  static String console = "/console";
   static String login = "/login";
   static String profile = "/profile";
   final List<AuthProvider> providers = [
@@ -32,7 +32,7 @@ class RouteManager {
               providers: providers,
               actions: [
                 AuthStateChangeAction<SignedIn>((context, state) {
-                  context.go(RouteManager.profile);
+                  context.go(RouteManager.console);
                 }),
               ],
             );
@@ -56,20 +56,18 @@ class RouteManager {
           builder: (BuildContext context, GoRouterState state) {
             return const HomeScreen();
           },
-          routes: <RouteBase>[
-            GoRoute(
-              path: console,
-              redirect: (BuildContext context, GoRouterState state) {
-                if (FirebaseAuth.instance.currentUser == null) {
-                  return login;
-                }
-                return null;
-              },
-              builder: (BuildContext context, GoRouterState state) {
-                return const ConsoleScreen();
-              },
-            ),
-          ],
+        ),
+        GoRoute(
+          path: console,
+          redirect: (BuildContext context, GoRouterState state) {
+            if (FirebaseAuth.instance.currentUser == null) {
+              return login;
+            }
+            return null;
+          },
+          builder: (BuildContext context, GoRouterState state) {
+            return const ConsoleScreen();
+          },
         ),
       ],
       errorBuilder: (context, state) => const ErrorScreen());

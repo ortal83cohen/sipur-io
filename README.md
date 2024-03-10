@@ -21,4 +21,5 @@ flutter build web
 firebase deploy hosting 
 
 firebase deploy --only functions
- 
+firebase deploy --only hosting
+
