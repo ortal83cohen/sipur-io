@@ -33,7 +33,7 @@ google-services.json
 *.hprof
 .flutter-plugins-dependencies
 *firebase_options.dart
-/.dart_tool/
-/.firebase/
-/.github/
-/.idea/
+#/.dart_tool/
+#/.firebase/
+#/.github/
+#/.idea/
