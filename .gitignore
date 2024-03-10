@@ -31,6 +31,9 @@ google-services.json
 
 # Android Profiling
 *.hprof
-dart_tool/
 .flutter-plugins-dependencies
 *firebase_options.dart
+/.dart_tool/
+/.firebase/
+/.github/
+/.idea/
