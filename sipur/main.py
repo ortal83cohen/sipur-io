@@ -45,7 +45,9 @@ def getBook(req: https_fn.CallableRequest) -> Any:
     firestore_client: google.cloud.firestore.Client = firestore.client()
 
     # Push the new message into Cloud Firestore using the Firebase Admin SDK.
-    _, doc_ref = firestore_client.collection("messages").add({"original": text + name})
+    doc_ref = firestore_client.collection("books").document(uid)
+
+    doc_ref.set({"name": text + name}, merge=True)
 
     # Send back a message that we've successfully written the message
     return {

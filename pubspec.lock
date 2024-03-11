@@ -413,6 +413,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.11.0"
+  opscroll_web:
+    dependency: "direct main"
+    description:
+      name: opscroll_web
+      sha256: c5917635a4249c55c425b3aa391554ef64204b950b07ac498a44cf00dba5b9d2
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.2"
   path:
     dependency: transitive
     description:
