@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:sipur/card_wrapper.dart';
 import 'package:sipur/screens/book/book_cubit.dart';
 import 'package:sipur/screens/book/book_state.dart';
 import 'package:uuid/v4.dart';
@@ -25,30 +26,37 @@ class _BookScreenState extends State<BookScreen> {
         child:
             BlocBuilder<BookCubit, BookState>(builder: (blockContext, state) {
           return Scaffold(
-              appBar: AppBar(
-                // TRY THIS: Try changing the color here to a specific color (to
-                // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-                // change color while the other colors stay the same.
-                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-                // Here we take the value from the MyHomePage object that was created by
-                // the App.build method, and use it to set our appbar title.
-                title: const Text("book Screen"),
+              body: CardWrapper(ListView(
+            children: [
+              Center(
+                child: Column(
+                  children: [
+                    Text("Create a new story"),
+                    Text("Every good story starts with a good idea")
+                  ],
+                ),
               ),
-              body: ListView(
-                children: [
-                  TextField(
-                    controller: TextEditingController()..text = state.childName,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter child name',
-                    ),
-                    onSubmitted: (string) {
-                      blockContext.read<BookCubit>().setChildName(string);
-                    },
-                    onChanged: (string) {},
-                  ),
-                ],
-              )
+              TextField(
+                controller: TextEditingController()..text = state.childName,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter child name',
+                ),
+                onSubmitted: (string) {
+                  blockContext.read<BookCubit>().setChildName(string);
+                },
+                onChanged: (string) {},
+              ),
+              SizedBox(
+                height: 55,
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    blockContext.read<BookCubit>().getBook();
+                  },
+                  child: Text("Execute"))
+            ],
+          ))
               // This trailing comma makes auto-formatting nicer for build methods.
               );
         }));

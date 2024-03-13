@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sipur/screens/book/book_state.dart';
@@ -26,7 +27,7 @@ class BookCubit extends Cubit<BookState> {
         _userStream = FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
-            .collection('books_params')
+            .collection('books')
             .doc(bookId)
             .snapshots(includeMetadataChanges: false);
 
@@ -50,5 +51,28 @@ class BookCubit extends Cubit<BookState> {
         .collection('books_params')
         .doc(bookId)
         .set({"childName": string}, SetOptions(merge: true));
+  }
+
+  Future<void> getBook() async {
+    HttpsCallable callable = FirebaseFunctions.instance.httpsCallable(
+      'getBook',
+      options: HttpsCallableOptions(
+        timeout: const Duration(seconds: 5),
+      ),
+    );
+
+    try {
+      final result = await callable.call({'bookId': bookId});
+
+      List book = [];
+      List pictures = [];
+      Map b = (result.data['book'] as Map);
+      int length = b.length;
+      for (int i = 1; i <= length; i++) {
+        Map page = b[i.toString()] as Map;
+        book.add(page["text"]);
+        pictures.add(page["picture"]);
+      }
+    } catch (e) {}
   }
 }

@@ -12,32 +12,37 @@ class CardWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          color: Colors.black,
-          width:
-              MediaQuery.of(context).size.width * ((drawer == null) ? 0 : 0.1),
-          height: MediaQuery.of(context).size.height,
-          child: drawer,
-        ),
-        Container(
-          width:
-              MediaQuery.of(context).size.width * ((drawer == null) ? 1 : 0.9),
-          height: MediaQuery.of(context).size.height,
-          padding: const EdgeInsets.all(16),
-          color: Colors.black,
-          child: Card(
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            color: Colors.white,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: child,
+    return Container(
+      color: Colors.black,
+      //     width:
+      //     MediaQuery.of(context).size.width * ((drawer == null) ? 0 : 0.1),
+      // height: MediaQuery.of(context).size.height,
+      child: Row(
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width *
+                ((drawer == null) ? 0 : 0.1),
+            height: MediaQuery.of(context).size.height,
+            child: drawer,
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width *
+                ((drawer == null) ? 1 : 0.9),
+            height: MediaQuery.of(context).size.height,
+            padding: const EdgeInsets.all(16),
+            color: Colors.black,
+            child: Card(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: child,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
