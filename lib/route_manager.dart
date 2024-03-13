@@ -4,13 +4,17 @@ import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:firebase_ui_oauth_google/firebase_ui_oauth_google.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sipur/screens/console_screen.dart';
+import 'package:sipur/screens/book/book_screen.dart';
+import 'package:sipur/screens/console/console_screen.dart';
 import 'package:sipur/screens/error_screen.dart';
 import 'package:sipur/screens/home_screen.dart';
+
+import 'card_wrapper.dart';
 
 class RouteManager {
   static String home = "/";
   static String console = "/console";
+  static String book = "book";
   static String login = "/login";
   static String profile = "/profile";
   final List<AuthProvider> providers = [
@@ -28,14 +32,14 @@ class RouteManager {
         GoRoute(
           path: login,
           builder: (BuildContext context, GoRouterState state) {
-            return SignInScreen(
+            return CardWrapper(SignInScreen(
               providers: providers,
               actions: [
                 AuthStateChangeAction<SignedIn>((context, state) {
                   context.go(RouteManager.console);
                 }),
               ],
-            );
+            ));
           },
         ),
         GoRoute(
@@ -58,17 +62,30 @@ class RouteManager {
           },
         ),
         GoRoute(
-          path: console,
-          redirect: (BuildContext context, GoRouterState state) {
-            if (FirebaseAuth.instance.currentUser == null) {
-              return login;
-            }
-            return null;
-          },
-          builder: (BuildContext context, GoRouterState state) {
-            return const ConsoleScreen();
-          },
-        ),
+            path: console,
+            redirect: (BuildContext context, GoRouterState state) {
+              if (FirebaseAuth.instance.currentUser == null) {
+                return login;
+              }
+              return null;
+            },
+            builder: (BuildContext context, GoRouterState state) {
+              return const ConsoleScreen();
+            },
+            routes: [
+              GoRoute(
+                path: book,
+                // redirect: (BuildContext context, GoRouterState state) {
+                //   if (FirebaseAuth.instance.currentUser == null) {
+                //     return login;
+                //   }
+                //   return null;
+                // },
+                builder: (BuildContext context, GoRouterState state) {
+                  return BookScreen((state.extra) as String?);
+                },
+              ),
+            ]),
       ],
       errorBuilder: (context, state) => const ErrorScreen());
 }
