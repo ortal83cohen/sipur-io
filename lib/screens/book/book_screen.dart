@@ -31,10 +31,18 @@ class _BookScreenState extends State<BookScreen> {
               Center(
                 child: Column(
                   children: [
-                    Text("Create a new story"),
-                    Text("Every good story starts with a good idea")
+                    Text(
+                      "Create a new story",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    Text("Every good story starts with a good idea",
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headlineMedium)
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 32,
               ),
               TextField(
                 controller: TextEditingController()..text = state.childName,

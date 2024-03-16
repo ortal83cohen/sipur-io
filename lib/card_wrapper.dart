@@ -12,37 +12,35 @@ class CardWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.black,
-      //     width:
-      //     MediaQuery.of(context).size.width * ((drawer == null) ? 0 : 0.1),
-      // height: MediaQuery.of(context).size.height,
-      child: Row(
-        children: [
-          SizedBox(
-            width: MediaQuery.of(context).size.width *
-                ((drawer == null) ? 0 : 0.1),
+    return Row(
+      children: [
+        if (drawer != null)
+          Container(
+            color: Colors.black,
+            width: MediaQuery.of(context).size.width * 0.15,
             height: MediaQuery.of(context).size.height,
             child: drawer,
           ),
-          Container(
-            width: MediaQuery.of(context).size.width *
-                ((drawer == null) ? 1 : 0.9),
-            height: MediaQuery.of(context).size.height,
-            padding: const EdgeInsets.all(16),
-            color: Colors.black,
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: child,
-              ),
+        Container(
+          width:
+              MediaQuery.of(context).size.width * (drawer != null ? 0.85 : 1),
+          height: MediaQuery.of(context).size.height,
+          padding:
+              const EdgeInsets.only(top: 16, bottom: 16, left: 16, right: 0),
+          color: Colors.black,
+          child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(16),
+                    bottomLeft: Radius.circular(16))),
+            color: Colors.white,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: child,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

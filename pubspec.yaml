@@ -22,7 +22,8 @@ dependencies:
   equatable: ^2.0.5
   cloud_firestore: ^4.15.8
   uuid: ^4.3.3
-
+#  flutter_stripe: ^10.1.1
+#  flutter_stripe_web: ^5.1.0
 
 
 

@@ -5,6 +5,8 @@ import 'package:sipur/card_wrapper.dart';
 import 'package:sipur/route_manager.dart';
 import 'package:sipur/screens/console/console_cubit.dart';
 
+import '../../utils.dart';
+
 class ConsoleScreen extends StatefulWidget {
   const ConsoleScreen({super.key});
 
@@ -25,24 +27,106 @@ class _ConsoleState extends State<ConsoleScreen> {
         child: BlocBuilder<ConsoleCubit, ConsoleState>(
             builder: (blockContext, state) {
           return Scaffold(
-            // appBar: AppBar(
-            //   // TRY THIS: Try changing the color here to a specific color (to
-            //   // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-            //   // change color while the other colors stay the same.
-            //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-            //   // Here we take the value from the MyHomePage object that was created by
-            //   // the App.build method, and use it to set our appbar title.
-            //   title: const Text("Console Screen"),
-            // ),
-            body: CardWrapper(
-              drawer: Column(
+            appBar: isHorizontal(context)
+                ? null
+                : AppBar(
+                    leadingWidth: 100,
+                    toolbarHeight: 88,
+                    title: Text("Console"),
+                    backgroundColor: Colors.transparent,
+                    elevation: 0,
+                  ),
+            extendBodyBehindAppBar: true,
+            drawer: Drawer(
+              backgroundColor: Colors.black,
+              child: ListView(
+                // Important: Remove any padding from the ListView.
+                padding: EdgeInsets.zero,
                 children: [
-                  Text(
-                    'console',
-                    style: TextStyle(color: Colors.white),
-                  )
+                  // const DrawerHeader(
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.blue,
+                  //   ),
+                  //   child: Text('Drawer Header'),
+                  // ),
+                  ListTile(
+                    title: Text(
+                      'subscription',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineMedium!
+                          .copyWith(color: Colors.white),
+                    ),
+                    onTap: () async {
+                      context.push(
+                        RouteManager.console + "\\" + RouteManager.subscription,
+                      );
+                    },
+                  ),
+                  // ListTile(
+                  //   title:        ,
+                  //   onTap: () {
+                  //
+                  //   },
+                  // ),
+                  // Stripe.buildPaymentRequestButton(
+                  //   onPressed: () {
+                  //     print('onPressed');
+                  //   },
+                  //   paymentRequestCreateOptions:
+                  //       PlatformPayWebPaymentRequestCreateOptions(
+                  //     country: 'DE',
+                  //     currency: 'EUR',
+                  //     total:
+                  //         PlatformPayWebPaymentItem(amount: 233, label: '23'),
+                  //   ),
+                  // ),
+                  ListTile(
+                    title: const Text('Item 2'),
+                    onTap: () {
+                      // Update the state of the app.
+                      // ...
+                    },
+                  ),
                 ],
               ),
+            ),
+            body: CardWrapper(
+              drawer: isHorizontal(context)
+                  ? Column(
+                      children: [
+                        SizedBox(
+                          height: 16,
+                        ),
+                        Text(
+                          'console',
+                          style: Theme.of(context)
+                              .textTheme
+                              .headlineMedium!
+                              .copyWith(color: Colors.white),
+                        ),
+                        SizedBox(
+                          height: 555,
+                        ),
+                        ListTile(
+                          title: Text(
+                            'subscription',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium!
+                                .copyWith(color: Colors.white),
+                          ),
+                          onTap: () async {
+                            context.push(
+                              RouteManager.console +
+                                  "\\" +
+                                  RouteManager.subscription,
+                            );
+                          },
+                        ),
+                      ],
+                    )
+                  : null,
               Stack(
                 // Center is a layout widget. It takes a single child and positions it
                 // in the middle of the parent.
@@ -75,7 +159,7 @@ class _ConsoleState extends State<ConsoleScreen> {
                         )),
                   ),
                   Positioned(
-                    top: 16,
+                    top: 40,
                     right: 16,
                     child: ElevatedButton(
                       onPressed: () => context.push(
@@ -90,4 +174,42 @@ class _ConsoleState extends State<ConsoleScreen> {
           );
         }));
   }
+
+// Future<void> initPaymentSheet() async {
+//   try {
+//     // 1. create payment intent on the server
+//     final data = await _createTestPaymentSheet();
+//
+//     // 2. initialize the payment sheet
+//     await Stripe.instance.initPaymentSheet(
+//       paymentSheetParameters: SetupPaymentSheetParameters(
+//         // Set to true for custom flow
+//         customFlow: false,
+//         // Main params
+//         merchantDisplayName: 'Flutter Stripe Store Demo',
+//         paymentIntentClientSecret: data['paymentIntent'],
+//         // Customer keys
+//         customerEphemeralKeySecret: data['ephemeralKey'],
+//         customerId: data['customer'],
+//         // Extra options
+//         applePay: const PaymentSheetApplePay(
+//           merchantCountryCode: 'US',
+//         ),
+//         googlePay: const PaymentSheetGooglePay(
+//           merchantCountryCode: 'US',
+//           testEnv: true,
+//         ),
+//         style: ThemeMode.dark,
+//       ),
+//     );
+//     setState(() {
+//       _ready = true;
+//     });
+//   } catch (e) {
+//     ScaffoldMessenger.of(context).showSnackBar(
+//       SnackBar(content: Text('Error: $e')),
+//     );
+//     rethrow;
+//   }
+// }
 }
