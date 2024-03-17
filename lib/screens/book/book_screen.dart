@@ -55,6 +55,24 @@ class _BookScreenState extends State<BookScreen> {
                 },
                 onChanged: (string) {},
               ),
+              TextField(
+                controller: TextEditingController()..text = state.story,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Story',
+                ),
+                onSubmitted: (string) {
+                  blockContext.read<BookCubit>().setStory(string);
+                },
+                onChanged: (string) {},
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    blockContext
+                        .read<BookCubit>()
+                        .setStory(((BookState.stories..shuffle())).first);
+                  },
+                  child: Text("I'm feeling lucky")),
               const SizedBox(
                 height: 16,
               ),

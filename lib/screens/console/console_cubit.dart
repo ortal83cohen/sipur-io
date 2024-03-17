@@ -33,8 +33,11 @@ class ConsoleCubit extends Cubit<ConsoleState> {
         _streamSubscription = _userStream!.listen((documentSnapshot) {
           Map<String, String> books = {};
           for (var element in documentSnapshot.docs) {
-            books[element.id] =
-                (jsonDecode(jsonEncode(element.data()))['childName']);
+            Map book = jsonDecode(jsonEncode(element.data()));
+            String title = book.containsKey('childName')
+                ? book['childName']
+                : (book.containsKey('story') ? book['story'] : "");
+            books[element.id] = title;
           }
           emit(ConsoleInitial(books));
           // Map? document = (jsonDecode(jsonEncode(documentSnapshot.data())));
