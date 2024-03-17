@@ -27,7 +27,7 @@ class ConsoleCubit extends Cubit<ConsoleState> {
         _userStream = FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
-            .collection('books_params')
+            .collection('books')
             .snapshots(includeMetadataChanges: false);
 
         _streamSubscription = _userStream!.listen((documentSnapshot) {

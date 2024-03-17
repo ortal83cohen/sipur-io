@@ -41,12 +41,12 @@ class _BookScreenState extends State<BookScreen> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 32,
               ),
               TextField(
                 controller: TextEditingController()..text = state.childName,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Enter child name',
                 ),
@@ -54,6 +54,22 @@ class _BookScreenState extends State<BookScreen> {
                   blockContext.read<BookCubit>().setChildName(string);
                 },
                 onChanged: (string) {},
+              ),
+              const SizedBox(
+                height: 16,
+              ),
+              DropdownButton<String>(
+                value: state.readerAge,
+                isDense: true,
+                onChanged: (String? newValue) {
+                  blockContext.read<BookCubit>().setReaderAge(newValue);
+                },
+                items: BookState.readerAgeOptions.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
               ),
               SizedBox(
                 height: 55,

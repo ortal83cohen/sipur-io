@@ -29,7 +29,7 @@ class CardWrapper extends StatelessWidget {
               const EdgeInsets.only(top: 16, bottom: 16, left: 16, right: 0),
           color: Colors.black,
           child: Card(
-            shape: RoundedRectangleBorder(
+            shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(16),
                     bottomLeft: Radius.circular(16))),

@@ -26,22 +26,22 @@ class _SubscriptionState extends State<Subscription> {
     Future.value().then((value) async {
       final price = await FirebaseFirestore.instance
           .collection('products')
-          .doc('prod_PkWmGDWXEtrM7I')
+          .doc('prod_Pki7n5KbAG1hVX')
           .collection('prices')
           .where('active', isEqualTo: true)
           .limit(1)
           .get();
-      String url = Uri.base.origin;
+      String url = Uri.base.origin; // window.location.origin
       final docRef = await FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser?.uid)
           .collection("checkout_sessions")
           .add({
         "client": "web",
-        "mode": "subscription",
+        "mode": "payment", //""subscription",
         "price": price.docs[0].id,
-        "success_url": "$url/success",
-        "cancel_url": "$url/cancel"
+        "success_url": "$url/#/sub_success",
+        "cancel_url": "$url/#/sub_cancel"
       });
 
       Stream<_CheckoutSessionSnapshot> sessionStream = FirebaseFirestore

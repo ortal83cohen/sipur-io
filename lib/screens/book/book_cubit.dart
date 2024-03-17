@@ -12,7 +12,8 @@ class BookCubit extends Cubit<BookState> {
   Stream<DocumentSnapshot>? _userStream;
   StreamSubscription? _streamSubscription;
 
-  BookCubit(this.bookId) : super(const BookInitial("")) {
+  BookCubit(this.bookId)
+      : super(BookInitial("", BookState.readerAgeOptions[0])) {
     FirebaseAuth.instance.authStateChanges().listen((user) async {
       _streamSubscription?.cancel();
       _userStream = null;
@@ -34,7 +35,8 @@ class BookCubit extends Cubit<BookState> {
         _streamSubscription = _userStream?.listen((documentSnapshot) {
           Map? document = (jsonDecode(jsonEncode(documentSnapshot.data())));
           if (document != null) {
-            emit(BookInitial(document["childName"]!));
+            emit(BookInitial(document["childName"]!,
+                document["readerAge"] ?? BookState.readerAgeOptions[0]));
           }
         });
         _streamSubscription?.onError((e, s) {
@@ -42,15 +44,6 @@ class BookCubit extends Cubit<BookState> {
         });
       }
     });
-  }
-
-  void setChildName(String string) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('books_params')
-        .doc(bookId)
-        .set({"childName": string}, SetOptions(merge: true));
   }
 
   Future<void> getBook() async {
@@ -74,5 +67,23 @@ class BookCubit extends Cubit<BookState> {
         pictures.add(page["picture"]);
       }
     } catch (e) {}
+  }
+
+  void setChildName(String string) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('books')
+        .doc(bookId)
+        .set({"childName": string}, SetOptions(merge: true));
+  }
+
+  void setReaderAge(string) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('books')
+        .doc(bookId)
+        .set({"readerAge": string}, SetOptions(merge: true));
   }
 }
