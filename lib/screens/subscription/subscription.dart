@@ -5,18 +5,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import 'abstract_subscription.dart';
+
 typedef _CheckoutSessionSnapshot = DocumentSnapshot<Map<String, dynamic>>;
 
-class Subscription extends StatefulWidget {
-  const Subscription({
+Subscription getInstance() => SubscriptionWeb();
+
+class SubscriptionWeb extends StatefulWidget implements Subscription {
+  const SubscriptionWeb({
     super.key,
   });
 
   @override
-  State<Subscription> createState() => _SubscriptionState();
+  State<SubscriptionWeb> createState() => _SubscriptionState();
 }
 
-class _SubscriptionState extends State<Subscription> {
+class _SubscriptionState extends State<SubscriptionWeb> {
   final StreamController<_CheckoutSessionSnapshot> _controller =
       StreamController<_CheckoutSessionSnapshot>();
 

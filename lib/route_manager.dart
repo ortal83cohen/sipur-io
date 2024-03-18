@@ -10,9 +10,9 @@ import 'package:sipur/screens/book/book_screen.dart';
 import 'package:sipur/screens/console/console_screen.dart';
 import 'package:sipur/screens/error_screen.dart';
 import 'package:sipur/screens/home_screen.dart';
+import 'package:sipur/screens/subscription/abstract_subscription.dart';
 
 import 'card_wrapper.dart';
-import 'screens/subscription/subscription.dart';
 
 CustomTransitionPage _buildPageWithFadeTransition<T>({
   required BuildContext context,
@@ -87,6 +87,7 @@ class RouteManager {
       routes: <RouteBase>[
         GoRoute(
           path: login,
+          redirect: consoleRedirect,
           pageBuilder: (BuildContext context, GoRouterState state) {
             return _buildPageWithFadeTransition(
                 context: context,
@@ -126,12 +127,7 @@ class RouteManager {
         ),
         GoRoute(
             path: console,
-            redirect: (BuildContext context, GoRouterState state) {
-              if (FirebaseAuth.instance.currentUser == null) {
-                return login;
-              }
-              return null;
-            },
+            redirect: loginRedirect,
             pageBuilder: (BuildContext context, GoRouterState state) {
               return _buildPageWithFadeTransition(
                   context: context,
@@ -141,12 +137,6 @@ class RouteManager {
             routes: [
               GoRoute(
                 path: book,
-                // redirect: (BuildContext context, GoRouterState state) {
-                //   if (FirebaseAuth.instance.currentUser == null) {
-                //     return login;
-                //   }
-                //   return null;
-                // },
                 pageBuilder: (BuildContext context, GoRouterState state) {
                   return _buildPageWithFadeTransition(
                       context: context,
@@ -164,4 +154,18 @@ class RouteManager {
             ]),
       ],
       errorBuilder: (context, state) => const ErrorScreen());
+
+  String? consoleRedirect(BuildContext context, GoRouterState state) {
+    if (FirebaseAuth.instance.currentUser != null) {
+      return console;
+    }
+    return null;
+  }
+
+  String? loginRedirect(BuildContext context, GoRouterState state) {
+    if (FirebaseAuth.instance.currentUser == null) {
+      return login;
+    }
+    return null;
+  }
 }
