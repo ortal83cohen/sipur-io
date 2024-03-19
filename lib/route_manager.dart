@@ -13,6 +13,7 @@ import 'package:sipur/screens/error_screen.dart';
 import 'package:sipur/screens/home_screen.dart';
 import 'package:sipur/screens/pricing_screen.dart';
 import 'package:sipur/screens/subscription/abstract_subscription.dart';
+import 'package:uuid/v4.dart';
 
 import 'widgets/card_wrapper.dart';
 
@@ -163,7 +164,8 @@ class RouteManager {
                   return _buildPageWithFadeTransition(
                       context: context,
                       state: state,
-                      child1: CreateScreen((state.extra) as String?));
+                      child1: CreateScreen(((state.extra) as String?) ??
+                          const UuidV4().generate()));
                 },
               ),
               GoRoute(

@@ -36,14 +36,14 @@ class _BookScreenState extends State<BookScreen> {
                       "THE BOOK",
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                    ...state.pages
-                        .map((e) => Column(
-                              children: [
-                                Text(e.text),
-                                Image.network(e.picture)
-                              ],
-                            ))
-                        .toList()
+                    ...state.pages.map((e) => Column(
+                          children: [
+                            Text(e.text),
+                            e.picture == ""
+                                ? const CircularProgressIndicator()
+                                : Image.network(e.picture)
+                          ],
+                        ))
                   ],
                 ),
               ),

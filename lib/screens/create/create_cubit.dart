@@ -2,19 +2,22 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'create_state.dart';
 
 class CreateCubit extends Cubit<CreateState> {
-  final String bookId;
+  final String? bookId;
   Stream<DocumentSnapshot>? _userStream;
   StreamSubscription? _streamSubscription;
 
   CreateCubit(this.bookId)
-      : super(CreateInitial(bookId, "", CreateState.readerAgeOptions[0], "")) {
+      : super(CreateInitial(
+            bookId ?? "no book", "", CreateState.readerAgeOptions[0], "")) {
+    if (bookId == null) {
+      return;
+    }
     FirebaseAuth.instance.authStateChanges().listen((user) async {
       _streamSubscription?.cancel();
       _userStream = null;
@@ -37,7 +40,7 @@ class CreateCubit extends Cubit<CreateState> {
           Map? document = (jsonDecode(jsonEncode(documentSnapshot.data())));
           if (document != null) {
             emit(CreateInitial(
-                bookId,
+                bookId!,
                 document["childName"] ?? "",
                 (document.containsKey("readerAge") &&
                         document["readerAge"] != null)
@@ -54,54 +57,64 @@ class CreateCubit extends Cubit<CreateState> {
   }
 
   Future<void> getBook() async {
-    HttpsCallable callable = FirebaseFunctions.instance.httpsCallable(
-      'getBook',
-      options: HttpsCallableOptions(
-        timeout: const Duration(seconds: 5),
-      ),
-    );
-
-    try {
-      final result = await callable.call({'bookId': bookId});
-
-      List book = [];
-      List pictures = [];
-      Map b = (result.data['book'] as Map);
-      int length = b.length;
-      for (int i = 1; i <= length; i++) {
-        Map page = b[i.toString()] as Map;
-        book.add(page["text"]);
-        pictures.add(page["picture"]);
-      }
-    } catch (e) {
-      print(e);
-    }
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('books')
+        .doc(bookId)
+        .set(state.toMap(), SetOptions(merge: true));
+    //
+    // HttpsCallable callable = FirebaseFunctions.instance.httpsCallable(
+    //   'getBook',
+    //   options: HttpsCallableOptions(
+    //     timeout: const Duration(seconds: 5),
+    //   ),
+    // );
+    //
+    // try {
+    //   final result = await callable.call({'bookId': bookId});
+    //
+    //   // List book = [];
+    //   // List pictures = [];
+    //   // Map b = (result.data['book'] as Map);
+    //   // int length = b.length;
+    //   // for (int i = 1; i <= length; i++) {
+    //   //   Map page = b[i.toString()] as Map;
+    //   //   book.add(page["text"]);
+    //   //   pictures.add(page["picture"]);
+    //   // }
+    // } catch (e) {
+    //   print(e);
+    // }
   }
 
   void setChildName(String string) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('books')
-        .doc(bookId)
-        .set({"childName": string}, SetOptions(merge: true));
+    emit((state as CreateInitial).copyWith(childName: string));
+    // FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(FirebaseAuth.instance.currentUser!.uid)
+    //     .collection('books')
+    //     .doc(bookId)
+    //     .set({"childName": string}, SetOptions(merge: true));
   }
 
   void setReaderAge(string) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('books')
-        .doc(bookId)
-        .set({"readerAge": string}, SetOptions(merge: true));
+    emit((state as CreateInitial).copyWith(readerAge: string));
+    // FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(FirebaseAuth.instance.currentUser!.uid)
+    //     .collection('books')
+    //     .doc(bookId)
+    //     .set({"readerAge": string}, SetOptions(merge: true));
   }
 
   void setStory(String string) {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser!.uid)
-        .collection('books')
-        .doc(bookId)
-        .set({"story": string}, SetOptions(merge: true));
+    emit((state as CreateInitial).copyWith(story: string));
+    // FirebaseFirestore.instance
+    //     .collection('users')
+    //     .doc(FirebaseAuth.instance.currentUser!.uid)
+    //     .collection('books')
+    //     .doc(bookId)
+    //     .set({"story": string}, SetOptions(merge: true));
   }
 }

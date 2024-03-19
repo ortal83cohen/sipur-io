@@ -33,8 +33,8 @@ class PageModel {
 
   factory PageModel.fromMap(Map<String, dynamic> map) {
     return PageModel(
-      map['text'] as String,
-      map['picture'] as String,
+      map.containsKey('text') ? map['text'] as String : "",
+      map.containsKey('picture') ? map['picture'] as String : "",
     );
   }
 }

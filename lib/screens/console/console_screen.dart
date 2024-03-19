@@ -62,7 +62,7 @@ class _ConsoleState extends State<ConsoleScreen> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
                                     onPressed: () => context
-                                        .push(RouteManager.book, extra: key),
+                                        .go(RouteManager.book, extra: key),
                                     child: Text('open book $value'),
                                   ),
                                 ),

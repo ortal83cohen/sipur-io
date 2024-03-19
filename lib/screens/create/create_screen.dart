@@ -54,10 +54,9 @@ class _BookScreenState extends State<CreateScreen> {
                   border: OutlineInputBorder(),
                   hintText: 'Enter child name',
                 ),
-                onSubmitted: (string) {
+                onChanged: (string) {
                   blockContext.read<CreateCubit>().setChildName(string);
                 },
-                onChanged: (string) {},
               ),
               TextField(
                 controller: TextEditingController()..text = state.story,
@@ -65,10 +64,9 @@ class _BookScreenState extends State<CreateScreen> {
                   border: OutlineInputBorder(),
                   hintText: 'Story',
                 ),
-                onSubmitted: (string) {
+                onChanged: (string) {
                   blockContext.read<CreateCubit>().setStory(string);
                 },
-                onChanged: (string) {},
               ),
               ElevatedButton(
                   onPressed: () {
@@ -102,8 +100,12 @@ class _BookScreenState extends State<CreateScreen> {
                     if (!context.mounted) {
                       return;
                     }
-                    context.pop();
-                    context.push(RouteManager.book, extra: state.bookId);
+                    Router.neglect(
+                        context,
+                        () =>
+                            context.go(RouteManager.book, extra: state.bookId));
+                    // GoRouter.of(context)
+                    //     .go(RouteManager.book, extra: state.bookId);
                   },
                   child: const Text("Execute"))
             ],
