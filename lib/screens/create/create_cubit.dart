@@ -5,15 +5,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sipur/screens/book/book_state.dart';
-import 'package:sipur/screens/book/page.dart';
 
-class BookCubit extends Cubit<BookState> {
+import 'create_state.dart';
+
+class CreateCubit extends Cubit<CreateState> {
   final String bookId;
   Stream<DocumentSnapshot>? _userStream;
   StreamSubscription? _streamSubscription;
 
-  BookCubit(this.bookId) : super(const BookInitial([])) {
+  CreateCubit(this.bookId)
+      : super(CreateInitial(bookId, "", CreateState.readerAgeOptions[0], "")) {
     FirebaseAuth.instance.authStateChanges().listen((user) async {
       _streamSubscription?.cancel();
       _userStream = null;
@@ -35,11 +36,14 @@ class BookCubit extends Cubit<BookState> {
         _streamSubscription = _userStream?.listen((documentSnapshot) {
           Map? document = (jsonDecode(jsonEncode(documentSnapshot.data())));
           if (document != null) {
-            List<PageModel> list = [];
-            (document["book"] as List).forEach((element) {
-              list.add(PageModel.fromMap(element));
-            });
-            emit(BookInitial(list));
+            emit(CreateInitial(
+                bookId,
+                document["childName"] ?? "",
+                (document.containsKey("readerAge") &&
+                        document["readerAge"] != null)
+                    ? document["readerAge"]
+                    : CreateState.readerAgeOptions[0],
+                document["story"] ?? ""));
           }
         });
         _streamSubscription?.onError((e, s) {

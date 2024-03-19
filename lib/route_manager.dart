@@ -8,11 +8,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sipur/screens/book/book_screen.dart';
 import 'package:sipur/screens/console/console_screen.dart';
+import 'package:sipur/screens/create/create_screen.dart';
 import 'package:sipur/screens/error_screen.dart';
 import 'package:sipur/screens/home_screen.dart';
+import 'package:sipur/screens/pricing_screen.dart';
 import 'package:sipur/screens/subscription/abstract_subscription.dart';
 
-import 'card_wrapper.dart';
+import 'widgets/card_wrapper.dart';
 
 CustomTransitionPage _buildPageWithFadeTransition<T>({
   required BuildContext context,
@@ -45,8 +47,8 @@ CustomTransitionPage _buildPageWithFadeTransition<T>({
             transform: Matrix4.rotationY(rotationAngle)
               // apply tilt value
               ..setEntry(3, 0, tilt),
-            child: child2,
             alignment: Alignment.centerRight,
+            child: child2,
           );
         },
       );
@@ -69,7 +71,10 @@ CustomTransitionPage _buildPageWithFadeTransition<T>({
 class RouteManager {
   static String home = "/";
   static String console = "/console";
-  static String book = "book";
+
+  static String book = "/book";
+  static String pricing = "/pricing";
+  static String create = "create";
   static String subscription = "subscription";
   static String login = "/login";
   static String profile = "/profile";
@@ -126,6 +131,23 @@ class RouteManager {
           },
         ),
         GoRoute(
+          path: book,
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return _buildPageWithFadeTransition(
+                context: context,
+                state: state,
+                child1: BookScreen((state.extra) as String?));
+          },
+        ),
+        GoRoute(
+          path: pricing,
+          // redirect: loginRedirect,
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return _buildPageWithFadeTransition(
+                context: context, state: state, child1: const PricingScreen());
+          },
+        ),
+        GoRoute(
             path: console,
             redirect: loginRedirect,
             pageBuilder: (BuildContext context, GoRouterState state) {
@@ -136,12 +158,12 @@ class RouteManager {
             },
             routes: [
               GoRoute(
-                path: book,
+                path: create,
                 pageBuilder: (BuildContext context, GoRouterState state) {
                   return _buildPageWithFadeTransition(
                       context: context,
                       state: state,
-                      child1: BookScreen((state.extra) as String?));
+                      child1: CreateScreen((state.extra) as String?));
                 },
               ),
               GoRoute(

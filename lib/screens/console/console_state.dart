@@ -4,9 +4,9 @@ part of 'console_cubit.dart';
 abstract class ConsoleState {
   final Map<String, String> books;
 
-  ConsoleState(this.books);
+  const ConsoleState(this.books);
 }
 
 class ConsoleInitial extends ConsoleState {
-  ConsoleInitial(super.books);
+  const ConsoleInitial(super.books);
 }

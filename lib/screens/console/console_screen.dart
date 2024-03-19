@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sipur/card_wrapper.dart';
 import 'package:sipur/route_manager.dart';
 import 'package:sipur/screens/console/console_cubit.dart';
+import 'package:sipur/widgets/card_wrapper.dart';
 
 import '../../utils.dart';
+import '../../widgets/menu_items.dart';
 
 class ConsoleScreen extends StatefulWidget {
   const ConsoleScreen({super.key});
@@ -32,101 +33,17 @@ class _ConsoleState extends State<ConsoleScreen> {
                 : AppBar(
                     leadingWidth: 100,
                     toolbarHeight: 88,
-                    title: Text("Console"),
+                    title: const Text("Console"),
                     backgroundColor: Colors.transparent,
                     elevation: 0,
                   ),
             extendBodyBehindAppBar: true,
             drawer: Drawer(
               backgroundColor: Colors.black,
-              child: ListView(
-                // Important: Remove any padding from the ListView.
-                padding: EdgeInsets.zero,
-                children: [
-                  // const DrawerHeader(
-                  //   decoration: BoxDecoration(
-                  //     color: Colors.blue,
-                  //   ),
-                  //   child: Text('Drawer Header'),
-                  // ),
-                  ListTile(
-                    title: Text(
-                      'subscription',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineMedium!
-                          .copyWith(color: Colors.white),
-                    ),
-                    onTap: () async {
-                      context.push(
-                        RouteManager.console + "\\" + RouteManager.subscription,
-                      );
-                    },
-                  ),
-                  // ListTile(
-                  //   title:        ,
-                  //   onTap: () {
-                  //
-                  //   },
-                  // ),
-                  // Stripe.buildPaymentRequestButton(
-                  //   onPressed: () {
-                  //     print('onPressed');
-                  //   },
-                  //   paymentRequestCreateOptions:
-                  //       PlatformPayWebPaymentRequestCreateOptions(
-                  //     country: 'DE',
-                  //     currency: 'EUR',
-                  //     total:
-                  //         PlatformPayWebPaymentItem(amount: 233, label: '23'),
-                  //   ),
-                  // ),
-                  ListTile(
-                    title: const Text('Item 2'),
-                    onTap: () {
-                      // Update the state of the app.
-                      // ...
-                    },
-                  ),
-                ],
-              ),
+              child: MenuItems(),
             ),
             body: CardWrapper(
-              drawer: isHorizontal(context)
-                  ? Column(
-                      children: [
-                        SizedBox(
-                          height: 16,
-                        ),
-                        Text(
-                          'console',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headlineMedium!
-                              .copyWith(color: Colors.white),
-                        ),
-                        SizedBox(
-                          height: 555,
-                        ),
-                        ListTile(
-                          title: Text(
-                            'subscription',
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineMedium!
-                                .copyWith(color: Colors.white),
-                          ),
-                          onTap: () async {
-                            context.push(
-                              RouteManager.console +
-                                  "\\" +
-                                  RouteManager.subscription,
-                            );
-                          },
-                        ),
-                      ],
-                    )
-                  : null,
+              drawer: isHorizontal(context) ? MenuItems() : null,
               Stack(
                 // Center is a layout widget. It takes a single child and positions it
                 // in the middle of the parent.
@@ -134,7 +51,7 @@ class _ConsoleState extends State<ConsoleScreen> {
                   Positioned(
                     top: 77,
                     left: 16,
-                    child: Container(
+                    child: SizedBox(
                         height: 330,
                         width: 333,
                         child: ListView(
@@ -144,12 +61,9 @@ class _ConsoleState extends State<ConsoleScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
-                                    onPressed: () => context.push(
-                                        RouteManager.console +
-                                            "\\" +
-                                            RouteManager.book,
-                                        extra: key),
-                                    child: Text('edit book $value'),
+                                    onPressed: () => context
+                                        .push(RouteManager.book, extra: key),
+                                    child: Text('open book $value'),
                                   ),
                                 ),
                                 '');
@@ -163,7 +77,7 @@ class _ConsoleState extends State<ConsoleScreen> {
                     right: 16,
                     child: ElevatedButton(
                       onPressed: () => context.push(
-                          RouteManager.console + "\\" + RouteManager.book),
+                          "${RouteManager.console}\\${RouteManager.create}"),
                       child: const Text('create new book'),
                     ),
                   ),

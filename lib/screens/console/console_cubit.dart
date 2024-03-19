@@ -1,21 +1,21 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'console_state.dart';
 
 class ConsoleCubit extends Cubit<ConsoleState> {
-  ConsoleCubit() : super(ConsoleInitial({})) {
-    Stream<QuerySnapshot>? _userStream;
-    StreamSubscription? _streamSubscription;
+  ConsoleCubit() : super(const ConsoleInitial({})) {
+    Stream<QuerySnapshot>? userStream;
+    StreamSubscription? streamSubscription;
 
     FirebaseAuth.instance.authStateChanges().listen((user) async {
-      _streamSubscription?.cancel();
-      _userStream = null;
+      streamSubscription?.cancel();
+      userStream = null;
       if (user == null) {
         FirebaseFirestore.instance
             .clearPersistence()
@@ -24,13 +24,14 @@ class ConsoleCubit extends Cubit<ConsoleState> {
         //   _controller.sink.add(null);
         // }
       } else {
-        _userStream = FirebaseFirestore.instance
+        userStream = FirebaseFirestore.instance
             .collection('users')
             .doc(user.uid)
             .collection('books')
+            .where('book', isNull: false)
             .snapshots(includeMetadataChanges: false);
 
-        _streamSubscription = _userStream!.listen((documentSnapshot) {
+        streamSubscription = userStream!.listen((documentSnapshot) {
           Map<String, String> books = {};
           for (var element in documentSnapshot.docs) {
             Map book = jsonDecode(jsonEncode(element.data()));
@@ -45,7 +46,7 @@ class ConsoleCubit extends Cubit<ConsoleState> {
           //   emit(BookInitial(document["childName"]!));
           // }
         });
-        _streamSubscription?.onError((e, s) {});
+        streamSubscription?.onError((e, s) {});
       }
     });
   }
