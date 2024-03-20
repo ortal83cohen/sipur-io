@@ -133,11 +133,12 @@ class RouteManager {
         ),
         GoRoute(
           path: book,
+          redirect: noExtraRedirect,
           pageBuilder: (BuildContext context, GoRouterState state) {
             return _buildPageWithFadeTransition(
                 context: context,
                 state: state,
-                child1: BookScreen((state.extra) as String?));
+                child1: BookScreen((state.extra) as String));
           },
         ),
         GoRoute(
@@ -189,6 +190,13 @@ class RouteManager {
   String? loginRedirect(BuildContext context, GoRouterState state) {
     if (FirebaseAuth.instance.currentUser == null) {
       return login;
+    }
+    return null;
+  }
+
+  String? noExtraRedirect(BuildContext context, GoRouterState state) {
+    if (state.extra == null) {
+      return console;
     }
     return null;
   }

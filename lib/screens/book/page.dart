@@ -3,7 +3,8 @@
 
 class PageModel {
   String _text;
-  String _picture;
+  String? _picture;
+
   PageModel copyWith({
     String? text,
     String? picture,
@@ -12,8 +13,10 @@ class PageModel {
         text ?? _text,
         picture ?? _picture,
       );
+
   String get text => _text;
-  String get picture => _picture;
+
+  String? get picture => _picture;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -34,7 +37,7 @@ class PageModel {
   factory PageModel.fromMap(Map<String, dynamic> map) {
     return PageModel(
       map.containsKey('text') ? map['text'] as String : "",
-      map.containsKey('picture') ? map['picture'] as String : "",
+      map['picture'],
     );
   }
 }

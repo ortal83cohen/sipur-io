@@ -35,9 +35,10 @@ class ConsoleCubit extends Cubit<ConsoleState> {
           Map<String, String> books = {};
           for (var element in documentSnapshot.docs) {
             Map book = jsonDecode(jsonEncode(element.data()));
-            String title = book.containsKey('childName')
-                ? book['childName']
-                : (book.containsKey('story') ? book['story'] : "");
+            String title =
+                book.containsKey('childName') && book['childName'] != ""
+                    ? book['childName']
+                    : (book.containsKey('story') ? book['story'] : "");
             books[element.id] = title;
           }
           emit(ConsoleInitial(books));

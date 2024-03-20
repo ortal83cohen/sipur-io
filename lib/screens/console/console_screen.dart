@@ -73,7 +73,7 @@ class _ConsoleState extends State<ConsoleScreen> {
                         )),
                   ),
                   Positioned(
-                    top: 40,
+                    top: 80,
                     right: 16,
                     child: ElevatedButton(
                       onPressed: () => context.push(

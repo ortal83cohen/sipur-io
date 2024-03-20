@@ -115,20 +115,24 @@ def bookCreated(event: firestore_fn.Event[firestore_fn.DocumentSnapshot | None])
         {
             "pageNumber": "1",
             "text": "Once upon a time, there was a boy named Nico who loved adventures. Nico lived in a small town surrounded by tall mountains and lush forests. He had a curious spirit and always found joy in exploring the wonders of the world around him.",
-            # "picture": "https://images.childbook.ai/sig/s:1200:1200/aHR0cHM6Ly9jaGlsZGJvb2stYjIuYi1jZG4ubmV0L3Rlc3QtYjdlOTI1NGQtZTNhYS00MWUwLWFkYzEtMzAyMmRkNWRlM2NmL1Vwc2NhbGVkXzAzMjguanBn.jpg"
+            "picture": "loading"
         },
         {
             "pageNumber": "2",
             "text": "One day, while walking in the forest, Nico stumbled upon a mysterious object hidden under a bush. It was a shimmering egg, unlike anything he had ever seen before. Intrigued, Nico gently picked up the egg and cradled it in his hands. He could feel a faint warmth emanating from the egg, as if it held a secret waiting to be discovered.",
-            # "picture": "https://images.childbook.ai/sig/s:1200:1200/aHR0cHM6Ly9jaGlsZGJvb2stYjIuYi1jZG4ubmV0L3Rlc3QtMDE4ODg2OWUtNGQ0Ny00MjlmLTg4YmQtMTdkOWYxZjNjOTYyL1Vwc2NhbGVkXzAzMjkuanBn.jpg"
+            "picture": "loading"
         },
         {
             "pageNumber": "3",
             "text": "But one stormy night, a loud crack echoed through Nico's house, waking him up from his sleep. He rushed to the nest and saw the egg starting to crack open, revealing a tiny creature inside. With a gasp of surprise, Nico watched in awe as a magical creature emerged",
-            # "picture": "https://images.childbook.ai/sig/s:1200:1200/aHR0cHM6Ly9jaGlsZGJvb2stYjIuYi1jZG4ubmV0L3Rlc3QtNDgwYmFiZDUtYzg0NC00NzI5LWJkYjUtNzgwNTFjN2ZmZWRmL1Vwc2NhbGVkXzAzMzAuanBn.jpg"
+            "picture": "loading"
         }
     ]
     book2 = [
+        {
+            "pageNumber": "0",
+            "text": story,
+        },
         {
             "pageNumber": "1",
             "text": "Once upon a time, there was a boy named Nico who loved adventures. Nico lived in a small town surrounded by tall mountains and lush forests. He had a curious spirit and always found joy in exploring the wonders of the world around him.",

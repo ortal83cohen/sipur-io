@@ -36,9 +36,9 @@ class BookCubit extends Cubit<BookState> {
           Map? document = (jsonDecode(jsonEncode(documentSnapshot.data())));
           if (document != null) {
             List<PageModel> list = [];
-            (document["book"] as List).forEach((element) {
+            for (var element in (document["book"] as List)) {
               list.add(PageModel.fromMap(element));
-            });
+            }
             emit(BookInitial(list));
           }
         });
