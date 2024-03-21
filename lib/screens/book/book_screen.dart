@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
@@ -7,8 +8,9 @@ import 'package:sipur/widgets/card_wrapper.dart';
 
 class BookScreen extends StatefulWidget {
   final String bookId;
+  final bool withAnimations;
 
-  const BookScreen(this.bookId, {super.key});
+  const BookScreen(this.bookId, {super.key, required this.withAnimations});
 
   @override
   State<BookScreen> createState() => _BookScreenState();
@@ -38,22 +40,87 @@ class _BookScreenState extends State<BookScreen> {
                         "THE BOOK",
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
+                      Text(
+                        state.title,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
                       if (state.pages.isEmpty)
                         const CircularProgressIndicator(),
                       ...state.pages.map((e) => Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(e.text),
+                              Container(
+                                constraints:
+                                    const BoxConstraints(maxWidth: 800),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 32),
+                                  child: e.text == "loading"
+                                      ? AnimatedTextKit(
+                                          key: const Key("1"),
+                                          animatedTexts: [
+                                            TypewriterAnimatedText(
+                                              "|",
+                                              textStyle: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall,
+                                            ),
+                                          ],
+                                        )
+                                      : (widget.withAnimations
+                                          ? AnimatedTextKit(
+                                              key: const Key("2"),
+                                              isRepeatingAnimation: false,
+                                              animatedTexts: [
+                                                TypewriterAnimatedText(
+                                                  e.text,
+                                                  textStyle: Theme.of(context)
+                                                      .textTheme
+                                                      .headlineSmall,
+                                                ),
+                                              ],
+                                            )
+                                          : Text(
+                                              e.text,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall,
+                                            )),
+                                ),
+                              ),
                               if (e.picture != null)
-                                e.picture == "loading"
-                                    ? Shimmer.fromColors(
-                                        baseColor: Colors.grey.shade50,
-                                        highlightColor: Colors.grey.shade300,
-                                        child: Container(
-                                          width: 400.0,
-                                          height: 300.0,
+                                AnimatedCrossFade(
+                                  duration: const Duration(milliseconds: 1500),
+                                  firstChild: Shimmer.fromColors(
+                                      baseColor: Colors.grey.shade50,
+                                      highlightColor: Colors.grey.shade300,
+                                      child: Container(
+                                        width: 800.0,
+                                        height: 600.0,
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(16)),
                                           color: Colors.black,
-                                        ))
-                                    : Image.network(e.picture!)
+                                        ),
+                                      )),
+                                  secondChild: Container(
+                                    width: 800.0,
+                                    height: 600.0,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                            e.picture!,
+                                          )),
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(16)),
+                                    ),
+                                  ),
+                                  crossFadeState: e.picture == "loading"
+                                      ? CrossFadeState.showFirst
+                                      : CrossFadeState.showSecond,
+                                ),
                             ],
                           ))
                     ],

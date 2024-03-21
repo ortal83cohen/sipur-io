@@ -13,7 +13,7 @@ class BookCubit extends Cubit<BookState> {
   Stream<DocumentSnapshot>? _userStream;
   StreamSubscription? _streamSubscription;
 
-  BookCubit(this.bookId) : super(const BookInitial([])) {
+  BookCubit(this.bookId) : super(const BookInitial([], "")) {
     FirebaseAuth.instance.authStateChanges().listen((user) async {
       _streamSubscription?.cancel();
       _userStream = null;
@@ -36,10 +36,10 @@ class BookCubit extends Cubit<BookState> {
           Map? document = (jsonDecode(jsonEncode(documentSnapshot.data())));
           if (document != null) {
             List<PageModel> list = [];
-            for (var element in (document["book"] as List)) {
+            for (var element in (document["book"]["pages"] as List)) {
               list.add(PageModel.fromMap(element));
             }
-            emit(BookInitial(list));
+            emit(BookInitial(list, document["book"]["title"]));
           }
         });
         _streamSubscription?.onError((e, s) {

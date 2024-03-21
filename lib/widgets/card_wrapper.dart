@@ -12,6 +12,7 @@ class CardWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Column(
       children: <Widget>[
         Expanded(
@@ -46,7 +47,12 @@ class CardWrapper extends StatelessWidget {
                               topLeft: Radius.circular(16),
                               bottomLeft: Radius.circular(16))),
                       color: Colors.white,
-                      child: child,
+                      child: Center(
+                        child: SizedBox(
+                          width: width > 500 ? width * 0.6 : width * 0.90,
+                          child: child,
+                        ),
+                      ),
                     ),
                   ),
                 ),

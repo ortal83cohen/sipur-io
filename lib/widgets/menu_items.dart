@@ -20,7 +20,7 @@ class MenuItems extends StatelessWidget {
         //   ),
         //   child: Text('Drawer Header'),
         // ),
-        SizedBox(
+        const SizedBox(
           height: 200,
         ),
         ListTile(
@@ -55,24 +55,6 @@ class MenuItems extends StatelessWidget {
             );
           },
         ),
-        // ListTile(
-        //   title:        ,
-        //   onTap: () {
-        //
-        //   },
-        // ),
-        // Stripe.buildPaymentRequestButton(
-        //   onPressed: () {
-        //     print('onPressed');
-        //   },
-        //   paymentRequestCreateOptions:
-        //       PlatformPayWebPaymentRequestCreateOptions(
-        //     country: 'DE',
-        //     currency: 'EUR',
-        //     total:
-        //         PlatformPayWebPaymentItem(amount: 233, label: '23'),
-        //   ),
-        // ),
 
         const Spacer(),
         ListTile(

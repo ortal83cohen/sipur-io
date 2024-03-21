@@ -18,8 +18,7 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 flutter build web
-firebase deploy hosting 
+firebase deploy --only hosting
 
 firebase deploy --only functions
-firebase deploy --only hosting
 

@@ -138,7 +138,10 @@ class RouteManager {
             return _buildPageWithFadeTransition(
                 context: context,
                 state: state,
-                child1: BookScreen((state.extra) as String));
+                child1: BookScreen(
+                  (state.extra) as String,
+                  withAnimations: true,
+                ));
           },
         ),
         GoRoute(
