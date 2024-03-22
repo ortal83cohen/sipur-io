@@ -15,7 +15,7 @@ import 'package:sipur/screens/pricing_screen.dart';
 import 'package:sipur/screens/subscription/abstract_subscription.dart';
 import 'package:uuid/v4.dart';
 
-import 'widgets/card_wrapper.dart';
+import '../widgets/card_wrapper.dart';
 
 CustomTransitionPage _buildPageWithFadeTransition<T>({
   required BuildContext context,
@@ -76,7 +76,7 @@ class RouteManager {
   static String book = "/book";
   static String pricing = "/pricing";
   static String create = "create";
-  static String subscription = "subscription";
+  static String payment = "subscription";
   static String login = "/login";
   static String profile = "/profile";
   final List<AuthProvider> providers = [
@@ -173,7 +173,7 @@ class RouteManager {
                 },
               ),
               GoRoute(
-                path: subscription,
+                path: payment,
                 pageBuilder: (BuildContext context, GoRouterState state) {
                   return _buildPageWithFadeTransition(
                       context: context, state: state, child1: Subscription());

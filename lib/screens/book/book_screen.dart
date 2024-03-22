@@ -6,6 +6,8 @@ import 'package:sipur/screens/book/book_cubit.dart';
 import 'package:sipur/screens/book/book_state.dart';
 import 'package:sipur/widgets/card_wrapper.dart';
 
+import '../../top_level/books_cubit.dart';
+
 class BookScreen extends StatefulWidget {
   final String bookId;
   final bool withAnimations;
@@ -25,9 +27,12 @@ class _BookScreenState extends State<BookScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => BookCubit(widget.bookId),
+        create: (_) => BookCubit(widget.bookId, context.watch<BooksCubit>()),
         child:
             BlocBuilder<BookCubit, BookState>(builder: (blockContext, state) {
+          if (state.book == null) {
+            return Container();
+          }
           return Scaffold(
               body: CardWrapper(ListView(
             children: [
@@ -41,12 +46,12 @@ class _BookScreenState extends State<BookScreen> {
                         style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Text(
-                        state.title,
+                        state.book!.getTitle(),
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
-                      if (state.pages.isEmpty)
+                      if (!state.boolWithData())
                         const CircularProgressIndicator(),
-                      ...state.pages.map((e) => Column(
+                      ...state.book!.pages.map((e) => Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(

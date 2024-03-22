@@ -31,7 +31,7 @@ class _SubscriptionState extends State<SubscriptionWeb> {
     Future.value().then((value) async {
       final price = await FirebaseFirestore.instance
           .collection('products')
-          .doc('prod_Pki7n5KbAG1hVX')
+          .doc('prod_PmQVBOb8d9Hr2D')
           .collection('prices')
           .where('active', isEqualTo: true)
           .limit(1)
@@ -43,6 +43,7 @@ class _SubscriptionState extends State<SubscriptionWeb> {
           .collection("checkout_sessions")
           .add({
         "client": "web",
+        "collect_shipping_address": true,
         "mode": "payment", //""subscription",
         "price": price.docs[0].id,
         "success_url": "$url/#/sub_success",

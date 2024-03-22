@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,42 +17,42 @@ class CreateCubit extends Cubit<CreateState> {
     if (bookId == null) {
       return;
     }
-    FirebaseAuth.instance.authStateChanges().listen((user) async {
-      _streamSubscription?.cancel();
-      _userStream = null;
-      if (user == null) {
-        FirebaseFirestore.instance
-            .clearPersistence()
-            .onError((error, stackTrace) => null);
-        // if (!_controller.isClosed) {
-        //   _controller.sink.add(null);
-        // }
-      } else {
-        _userStream = FirebaseFirestore.instance
-            .collection('users')
-            .doc(user.uid)
-            .collection('books')
-            .doc(bookId)
-            .snapshots(includeMetadataChanges: false);
-
-        _streamSubscription = _userStream?.listen((documentSnapshot) {
-          Map? document = (jsonDecode(jsonEncode(documentSnapshot.data())));
-          if (document != null) {
-            emit(CreateInitial(
-                bookId!,
-                document["childName"] ?? "",
-                (document.containsKey("readerAge") &&
-                        document["readerAge"] != null)
-                    ? document["readerAge"]
-                    : CreateState.readerAgeOptions[0],
-                document["story"] ?? ""));
-          }
-        });
-        _streamSubscription?.onError((e, s) {
-          print(e);
-        });
-      }
-    });
+    // FirebaseAuth.instance.authStateChanges().listen((user) async {
+    //   _streamSubscription?.cancel();
+    //   _userStream = null;
+    //   if (user == null) {
+    //     FirebaseFirestore.instance
+    //         .clearPersistence()
+    //         .onError((error, stackTrace) => null);
+    //     // if (!_controller.isClosed) {
+    //     //   _controller.sink.add(null);
+    //     // }
+    //   } else {
+    //     _userStream = FirebaseFirestore.instance
+    //         .collection('users')
+    //         .doc(user.uid)
+    //         .collection('books')
+    //         .doc(bookId)
+    //         .snapshots(includeMetadataChanges: false);
+    //
+    //     _streamSubscription = _userStream?.listen((documentSnapshot) {
+    //       Map? document = (jsonDecode(jsonEncode(documentSnapshot.data())));
+    //       if (document != null) {
+    //         emit(CreateInitial(
+    //             bookId!,
+    //             document["childName"] ?? "",
+    //             (document.containsKey("readerAge") &&
+    //                     document["readerAge"] != null)
+    //                 ? document["readerAge"]
+    //                 : CreateState.readerAgeOptions[0],
+    //             document["story"] ?? ""));
+    //       }
+    //     });
+    //     _streamSubscription?.onError((e, s) {
+    //       print(e);
+    //     });
+    //   }
+    // });
   }
 
   Future<void> getBook() async {

@@ -1,16 +1,19 @@
 import 'package:equatable/equatable.dart';
-
-import 'page.dart';
+import 'package:sipur/top_level/books_cubit.dart';
 
 abstract class BookState extends Equatable {
-  final List<PageModel> pages;
-  final String title;
+  final Book? book;
 
-  const BookState(this.pages, this.title);
+  const BookState(this.book);
+
   @override
-  List<Object> get props => [pages, title];
+  List<Object> get props => [book ?? ""];
+
+  bool boolWithData() {
+    return book?.id != null && book!.pages.isNotEmpty;
+  }
 }
 
 class BookInitial extends BookState {
-  const BookInitial(super.childName, super.title);
+  const BookInitial(super.book);
 }

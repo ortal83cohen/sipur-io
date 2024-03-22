@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:sipur/route_manager.dart';
 import 'package:sipur/screens/console/console_cubit.dart';
+import 'package:sipur/top_level/route_manager.dart';
 import 'package:sipur/widgets/card_wrapper.dart';
 
+import '../../top_level/books_cubit.dart';
 import '../../utils.dart';
 import '../../widgets/menu_items.dart';
 
@@ -24,7 +25,7 @@ class _ConsoleState extends State<ConsoleScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => ConsoleCubit(),
+        create: (_) => ConsoleCubit(context.watch<BooksCubit>()),
         child: BlocBuilder<ConsoleCubit, ConsoleState>(
             builder: (blockContext, state) {
           return Scaffold(

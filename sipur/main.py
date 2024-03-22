@@ -4,12 +4,16 @@ import time
 
 from typing import Any
 
+from firebase_functions import eventarc_fn
+
 from firebase_functions import firestore_fn, https_fn
 
 # The Firebase Admin SDK to access Cloud Firestore.
 from firebase_admin import initialize_app, firestore
 import google.cloud.firestore
 import json
+
+from google.cloud.firestore_v1 import FieldFilter
 
 app = initialize_app()
 
@@ -19,6 +23,25 @@ def thread_function(reference, sleep, book):
     # firestore_client: google.cloud.firestore.Client = firestore.client()
     # reference = firestore_client.collection("users").document(uid).collection('books').document(bookId)
     reference.set({"book": book}, merge=True)
+
+
+@eventarc_fn.on_custom_event_published(
+    event_type="com.stripe.v1.payment_intent.succeeded")
+def paymentSucceeded(event: eventarc_fn.CloudEvent) -> None:
+    print("Received image resize completed event: ", event.data)
+    print("Received image resize completed event: ", event.id)
+
+    firestore_client: google.cloud.firestore.Client = firestore.client()
+    data = firestore_client.collection("users").where(filter=FieldFilter("stripeId", "==", event.data.get("customer"))).get()[0]
+    print("reference: ", data)
+
+    try:
+        amount = int(data.get("balance"))
+    except:
+        amount = 0
+
+    doc_ref = firestore_client.collection("users").document(data.get("uid"))
+    doc_ref.set({"balance": event.data.get("amount") + amount}, merge=True)
 
 
 #
@@ -89,7 +112,7 @@ def thread_function(reference, sleep, book):
 #     }
 
 
-@firestore_fn.on_document_created(document="users/{userId}/books/{bookId}")
+@firestore_fn.on_document_created(document="users/{userId}/books/{bookId}", region="europe-west1")
 def bookCreated(event: firestore_fn.Event[firestore_fn.DocumentSnapshot | None]) -> None:
     """Listens for new documents to be added to /messages. If the document has
     an "original" field, creates an "uppercase" field containg the contents of
@@ -109,8 +132,8 @@ def bookCreated(event: firestore_fn.Event[firestore_fn.DocumentSnapshot | None])
 
     book = {
         "title": story,
-        "frontPicture" :"",
-        "backPicture" :"",
+        "frontPicture": "",
+        "backPicture": "",
         "pages": [
             {
                 "pageNumber": "1",
