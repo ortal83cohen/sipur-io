@@ -15,16 +15,6 @@ abstract class UserState extends Equatable {
   const UserState(
       this.balance, this.email, this.stripeId, this.stripeLink, this.uid);
 
-  Map<String, dynamic> toMap() {
-    return {
-      'balance': balance,
-      'email': email,
-      'stripeId': stripeId,
-      'stripeLink': stripeLink,
-      'uid': uid,
-    };
-  }
-
   String getBalance() {
     var format = NumberFormat.currency(locale: "en_DE", symbol: "€");
     return "balance: ${format.format((balance ?? 0) / 100)}";

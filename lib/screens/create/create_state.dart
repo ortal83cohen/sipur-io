@@ -2,12 +2,14 @@ import 'package:equatable/equatable.dart';
 
 abstract class CreateState extends Equatable {
   final String bookId;
+  final bool enoughFunds;
+  final int pages;
   final String childName;
   final String readerAge;
   final String story;
 
   @override
-  List<Object> get props => [childName, readerAge, story];
+  List<Object> get props => [childName, readerAge, story, pages, enoughFunds];
 
   static final List<String> readerAgeOptions = [
     "1-2",
@@ -50,7 +52,8 @@ abstract class CreateState extends Equatable {
     "The Nighttime Adventure of Little Dreamer"
   ];
 
-  const CreateState(this.bookId, this.childName, this.readerAge, this.story);
+  const CreateState(this.bookId, this.pages, this.childName, this.readerAge,
+      this.story, this.enoughFunds);
 
   Map<String, dynamic> toMap() {
     return {
@@ -58,42 +61,30 @@ abstract class CreateState extends Equatable {
       'childName': childName,
       'readerAge': readerAge,
       'story': story,
+      'requiredPages': pages,
+      'enoughFunds': enoughFunds,
     };
   }
 
-  CreateState copyWithInitial({
+  CreateState copy({
+    int? pages,
     String? childName,
     String? readerAge,
     String? story,
+    bool? enoughFunds,
   }) {
     return CreateInitial(
       bookId,
+      pages ?? this.pages,
       childName ?? this.childName,
       readerAge ?? this.readerAge,
       story ?? this.story,
-    );
-  }
-
-  CreateState copyWithNoFounds({
-    String? childName,
-    String? readerAge,
-    String? story,
-  }) {
-    return CreateNoFounds(
-      bookId,
-      childName ?? this.childName,
-      readerAge ?? this.readerAge,
-      story ?? this.story,
+      enoughFunds ?? this.enoughFunds,
     );
   }
 }
 
 class CreateInitial extends CreateState {
-  const CreateInitial(
-      super.bookId, super.childName, super.readerAge, super.story);
-}
-
-class CreateNoFounds extends CreateState {
-  const CreateNoFounds(
-      super.bookId, super.childName, super.readerAge, super.story);
+  const CreateInitial(super.bookId, super.pages, super.childName,
+      super.readerAge, super.story, super.enoughFunds);
 }

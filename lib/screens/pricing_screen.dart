@@ -34,32 +34,8 @@ class _PricingState extends State<PricingScreen> {
             if (widget.noFounds) ...[
               const Text(
                   "You don't have enough funds to create this book, please top up"),
-              ListTile(
-                textColor: Colors.black,
-                style: ListTileStyle.drawer,
-                title: AutoSizeText(
-                  maxLines: 1,
-                  'payment',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineMedium!
-                      .copyWith(color: Colors.black),
-                ),
-                subtitle: AutoSizeText(
-                  maxLines: 1,
-                  context.watch<UserCubit>().state.getBalance(),
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodySmall!
-                      .copyWith(color: Colors.black),
-                ),
-                onTap: () async {
-                  context.push(
-                    "${RouteManager.console}\\${RouteManager.payment}",
-                  );
-                },
-              ),
             ],
+            Price(),
             const Spacer(),
             const Text('Pricing Page'),
             const Spacer(),
@@ -68,5 +44,44 @@ class _PricingState extends State<PricingScreen> {
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+class Price extends StatelessWidget {
+  const Price({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        height: 555,
+        width: 555,
+        color: Colors.cyan,
+        child: ListTile(
+          textColor: Colors.black,
+          style: ListTileStyle.drawer,
+          title: AutoSizeText(
+            maxLines: 1,
+            'payment',
+            style: Theme.of(context)
+                .textTheme
+                .headlineMedium!
+                .copyWith(color: Colors.black),
+          ),
+          subtitle: AutoSizeText(
+            maxLines: 1,
+            context.watch<UserCubit>().state.getBalance(),
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall!
+                .copyWith(color: Colors.black),
+          ),
+          onTap: () async {
+            context.push(
+              "${RouteManager.console}\\${RouteManager.payment}",
+            );
+          },
+        ));
   }
 }

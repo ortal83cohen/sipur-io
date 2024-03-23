@@ -40,11 +40,12 @@ class UserCubit extends Cubit<UserState> {
     });
   }
 
-  bool checkBalance() {
-    int bookPrice = remoteConfigCubit
-        .state.remoteConfig[RemoteConfigItems.bookPrice.name]!
+  bool checkBalance(int numberOfPages) {
+    int pagePrice = remoteConfigCubit
+        .state.remoteConfig[RemoteConfigItems.pagePrice.name]!
         .asInt();
-    return (state.balance != null && state.balance! >= bookPrice);
+    return (state.balance != null &&
+        state.balance! >= (pagePrice * numberOfPages));
   }
 }
 

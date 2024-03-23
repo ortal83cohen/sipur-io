@@ -31,7 +31,7 @@ class RemoteConfigLoaded extends RemoteConfigState {
 
 // REMOTE CONFIG ITEMS
 enum RemoteConfigItems {
-  bookPrice(8000),
+  pagePrice(100),
 
   something(0.756);
 

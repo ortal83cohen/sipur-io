@@ -12,18 +12,13 @@ class CreateCubit extends Cubit<CreateState> {
   final UserCubit userCubit;
 
   CreateCubit(this.bookId, this.userCubit)
-      : super(CreateInitial(
-            bookId ?? "no book", "", CreateState.readerAgeOptions[0], "")) {
-    if (!userCubit.checkBalance()) {
-      emit((state as CreateInitial).copyWithNoFounds());
-    }
-    if (bookId == null) {
-      return;
-    }
+      : super(CreateInitial(bookId ?? "no book", 2, "",
+            CreateState.readerAgeOptions[0], "", true)) {
+    emit((state as CreateInitial).copy(enoughFunds: userCubit.checkBalance(2)));
   }
 
   Future<void> createBook() async {
-    if (userCubit.checkBalance()) {
+    if (userCubit.checkBalance(state.pages)) {
       FirebaseFirestore.instance
           .collection('users')
           .doc(FirebaseAuth.instance.currentUser!.uid)
@@ -31,19 +26,23 @@ class CreateCubit extends Cubit<CreateState> {
           .doc(bookId)
           .set(state.toMap(), SetOptions(merge: true));
     } else {
-      emit((state).copyWithNoFounds());
+      emit((state).copy(enoughFunds: false));
     }
   }
 
   void setChildName(String string) {
-    emit((state).copyWithInitial(childName: string));
+    emit((state).copy(childName: string));
   }
 
   void setReaderAge(string) {
-    emit((state).copyWithInitial(readerAge: string));
+    emit((state).copy(readerAge: string));
   }
 
   void setStory(String string) {
-    emit((state).copyWithInitial(story: string));
+    emit((state).copy(story: string));
+  }
+
+  void setPages(int int) {
+    emit((state).copy(pages: int, enoughFunds: userCubit.checkBalance(int)));
   }
 }

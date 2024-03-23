@@ -46,8 +46,8 @@ class _SubscriptionState extends State<SubscriptionWeb> {
         "collect_shipping_address": true,
         "mode": "payment", //""subscription",
         "price": price.docs[0].id,
-        "success_url": "$url/#/sub_success",
-        "cancel_url": "$url/#/sub_cancel"
+        "success_url": "$url/#/console?m=success",
+        "cancel_url": "$url/#/console?m=cancel"
       });
 
       Stream<_CheckoutSessionSnapshot> sessionStream = FirebaseFirestore

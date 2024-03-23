@@ -1,4 +1,5 @@
 # The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
+import datetime
 import threading
 import time
 
@@ -34,12 +35,35 @@ def paymentSucceeded(event: eventarc_fn.CloudEvent) -> None:
 
     # we can save this call by adding the user id to the metadata
     data = \
-    firestore_client.collection("users").where(filter=FieldFilter("stripeId", "==", event.data.get("customer"))).get()[
-        0]
+        firestore_client.collection("users").where(
+            filter=FieldFilter("stripeId", "==", event.data.get("customer"))).get()[
+            0]
     print("reference: ", data)
 
     doc_ref = firestore_client.collection("users").document(data.get("uid"))
-    doc_ref.set({"balance": firestore.firestore.Increment(event.data.get("amount"))}, merge=True)
+    doc_ref.set({"balance": firestore.firestore.Increment(event.data.get("amount")),
+                 "transactions": firestore.firestore.ArrayUnion(
+                     [{"amount": event.data.get("amount"), "id": event.data.get("id"), "product": "topUp",
+                       "timestamp": datetime.datetime.now(tz=datetime.timezone.utc).strftime("%d/%m/%Y, %H:%M:%S")}])},
+                merge=True)
+
+
+@firestore_fn.on_document_created(document="users/{userId}", region="europe-west1")
+def newUser(event: firestore_fn.Event[firestore_fn.DocumentSnapshot | None]) -> None:
+    if event.data is None:
+        return
+    try:
+        userId = event.params.get("userId")
+    except KeyError:
+        return
+
+    joinBonus = 200
+
+    firestore_client: google.cloud.firestore.Client = firestore.client()
+    doc_ref = firestore_client.collection("users").document(userId)
+    doc_ref.set({"balance": joinBonus, "transactions": [
+        {"amount": joinBonus, "product": "joinBonus",
+         "timestamp": datetime.datetime.now(tz=datetime.timezone.utc).strftime("%d/%m/%Y, %H:%M:%S")}]}, merge=True)
 
 
 @firestore_fn.on_document_created(document="users/{userId}/books/{bookId}", region="europe-west1")
@@ -49,16 +73,20 @@ def bookCreated(event: firestore_fn.Event[firestore_fn.DocumentSnapshot | None])
     try:
         userId = event.params.get("userId")
         bookId = event.data.get("bookId")
+        requiredPages = event.data.get("requiredPages")
         childName = event.data.get("childName")
         readerAge = event.data.get("readerAge")
         story = event.data.get("story")
     except KeyError:
         return
-    bookPrice = 900
+    pagePrice = 100
+    bookPrice = pagePrice * requiredPages
 
     firestore_client: google.cloud.firestore.Client = firestore.client()
     doc_ref = firestore_client.collection("users").document(userId)
-    doc_ref.set({"balance": firestore.firestore.Increment(-bookPrice)}, merge=True)
+    doc_ref.set({"balance": firestore.firestore.Increment(-bookPrice), "transactions": firestore.firestore.ArrayUnion(
+        [{"bookId": bookId, "amount": -bookPrice, "product": "bookCreation",
+          "timestamp": datetime.datetime.now(tz=datetime.timezone.utc).strftime("%d/%m/%Y, %H:%M:%S")}])}, merge=True)
 
     book = {
         "title": story,
