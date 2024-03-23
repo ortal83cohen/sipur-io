@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sipur/screens/pricing_screen.dart';
 import 'package:sipur/top_level/route_manager.dart';
+import 'package:sipur/top_level/user_cubit.dart';
 import 'package:sipur/widgets/card_wrapper.dart';
 import 'package:uuid/v4.dart';
 
@@ -26,9 +28,13 @@ class _BookScreenState extends State<CreateScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (_) => CreateCubit(widget.bookId ?? const UuidV4().generate()),
+        create: (_) => CreateCubit(widget.bookId ?? const UuidV4().generate(),
+            context.watch<UserCubit>()),
         child: BlocBuilder<CreateCubit, CreateState>(
             builder: (blockContext, state) {
+          if (state is CreateNoFounds) {
+            return const PricingScreen(true);
+          }
           return Scaffold(
               body: CardWrapper(ListView(
             children: [
@@ -96,16 +102,21 @@ class _BookScreenState extends State<CreateScreen> {
               ),
               ElevatedButton(
                   onPressed: () async {
-                    await blockContext.read<CreateCubit>().getBook();
-                    if (!context.mounted) {
-                      return;
+                    try {
+                      await blockContext.read<CreateCubit>().createBook();
+
+                      if (!context.mounted) {
+                        return;
+                      }
+                      Router.neglect(
+                          context,
+                          () => context.go(RouteManager.book,
+                              extra: (state.bookId, true)));
+                    } catch (e) {
+                      if (e is InsufficientFundException) {
+                        await _dialogBuilder(context);
+                      }
                     }
-                    Router.neglect(
-                        context,
-                        () =>
-                            context.go(RouteManager.book, extra: state.bookId));
-                    // GoRouter.of(context)
-                    //     .go(RouteManager.book, extra: state.bookId);
                   },
                   child: const Text("Execute"))
             ],
@@ -114,4 +125,41 @@ class _BookScreenState extends State<CreateScreen> {
               );
         }));
   }
+}
+
+Future<void> _dialogBuilder(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Basic dialog title'),
+        content: const Text(
+          'A dialog is a type of modal window that\n'
+          'appears in front of app content to\n'
+          'provide critical information, or prompt\n'
+          'for a decision to be made.',
+        ),
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text('Top up now'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text("Thanks, I'll do it later"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

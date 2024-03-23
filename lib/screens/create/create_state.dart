@@ -6,6 +6,9 @@ abstract class CreateState extends Equatable {
   final String readerAge;
   final String story;
 
+  @override
+  List<Object> get props => [childName, readerAge, story];
+
   static final List<String> readerAgeOptions = [
     "1-2",
     "2-3",
@@ -51,22 +54,14 @@ abstract class CreateState extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'bookId': this.bookId,
-      'childName': this.childName,
-      'readerAge': this.readerAge,
-      'story': this.story,
+      'bookId': bookId,
+      'childName': childName,
+      'readerAge': readerAge,
+      'story': story,
     };
   }
-}
 
-class CreateInitial extends CreateState {
-  const CreateInitial(
-      super.bookId, super.childName, super.readerAge, super.story);
-
-  @override
-  List<Object> get props => [childName, readerAge, story];
-
-  CreateState copyWith({
+  CreateState copyWithInitial({
     String? childName,
     String? readerAge,
     String? story,
@@ -78,4 +73,27 @@ class CreateInitial extends CreateState {
       story ?? this.story,
     );
   }
+
+  CreateState copyWithNoFounds({
+    String? childName,
+    String? readerAge,
+    String? story,
+  }) {
+    return CreateNoFounds(
+      bookId,
+      childName ?? this.childName,
+      readerAge ?? this.readerAge,
+      story ?? this.story,
+    );
+  }
+}
+
+class CreateInitial extends CreateState {
+  const CreateInitial(
+      super.bookId, super.childName, super.readerAge, super.story);
+}
+
+class CreateNoFounds extends CreateState {
+  const CreateNoFounds(
+      super.bookId, super.childName, super.readerAge, super.story);
 }

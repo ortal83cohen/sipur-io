@@ -1,3 +1,4 @@
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
 import 'package:auto_size_text/auto_size_text.dart';
@@ -7,6 +8,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:logger/logger.dart';
 import 'package:sipur/top_level/user_cubit.dart';
 
 import '../top_level/route_manager.dart';
@@ -99,7 +101,7 @@ class MenuItems extends StatelessWidget {
               });
               html.window.location.href = data.data['url'] as String;
             } catch (e) {
-              print(e);
+              Logger().e(e);
             }
           },
         ),

@@ -37,4 +37,16 @@ class UserCubit extends Cubit<UserState> {
       }
     });
   }
+
+  bool checkBalance() {
+    int bookPrice = 2000;
+    return (state.balance != null && state.balance! >= bookPrice);
+  }
+}
+
+class InsufficientFundException implements Exception {
+  InsufficientFundException();
+
+  @override
+  String toString() => 'Insufficient Fund Exception';
 }

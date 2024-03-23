@@ -11,7 +11,7 @@ abstract class BooksState extends Equatable {
 
   Map<String, dynamic> toMap() {
     return {
-      'books': this.books,
+      'books': books,
     };
   }
 

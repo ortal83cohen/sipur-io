@@ -31,7 +31,7 @@ class _BookScreenState extends State<BookScreen> {
         child:
             BlocBuilder<BookCubit, BookState>(builder: (blockContext, state) {
           if (state.book == null) {
-            return Container();
+            return Scaffold(body: CardWrapper(Container()));
           }
           return Scaffold(
               body: CardWrapper(ListView(

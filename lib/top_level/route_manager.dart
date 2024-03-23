@@ -135,12 +135,13 @@ class RouteManager {
           path: book,
           redirect: noExtraRedirect,
           pageBuilder: (BuildContext context, GoRouterState state) {
+            (String, bool) extra = ((state.extra) as (String, bool));
             return _buildPageWithFadeTransition(
                 context: context,
                 state: state,
                 child1: BookScreen(
-                  (state.extra) as String,
-                  withAnimations: true,
+                  extra.$1,
+                  withAnimations: extra.$2,
                 ));
           },
         ),
@@ -149,7 +150,9 @@ class RouteManager {
           // redirect: loginRedirect,
           pageBuilder: (BuildContext context, GoRouterState state) {
             return _buildPageWithFadeTransition(
-                context: context, state: state, child1: const PricingScreen());
+                context: context,
+                state: state,
+                child1: const PricingScreen(false));
           },
         ),
         GoRoute(

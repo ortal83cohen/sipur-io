@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:sipur/screens/book/book_state.dart';
 import 'package:sipur/top_level/books_cubit.dart';
 
@@ -76,7 +77,7 @@ class BookCubit extends Cubit<BookState> {
         pictures.add(page["picture"]);
       }
     } catch (e) {
-      print(e);
+      Logger().e(e);
     }
   }
 

@@ -39,12 +39,12 @@ class _ConsoleState extends State<ConsoleScreen> {
                     elevation: 0,
                   ),
             extendBodyBehindAppBar: true,
-            drawer: Drawer(
+            drawer: const Drawer(
               backgroundColor: Colors.black,
               child: MenuItems(),
             ),
             body: CardWrapper(
-              drawer: isHorizontal(context) ? MenuItems() : null,
+              drawer: isHorizontal(context) ? const MenuItems() : null,
               Stack(
                 // Center is a layout widget. It takes a single child and positions it
                 // in the middle of the parent.
@@ -62,8 +62,9 @@ class _ConsoleState extends State<ConsoleScreen> {
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: ElevatedButton(
-                                    onPressed: () => context
-                                        .go(RouteManager.book, extra: key),
+                                    onPressed: () => context.go(
+                                        RouteManager.book,
+                                        extra: (key, false)),
                                     child: Text('open book $value'),
                                   ),
                                 ),

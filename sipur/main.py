@@ -28,20 +28,16 @@ def thread_function(reference, sleep, book):
 @eventarc_fn.on_custom_event_published(
     event_type="com.stripe.v1.payment_intent.succeeded")
 def paymentSucceeded(event: eventarc_fn.CloudEvent) -> None:
-    print("Received image resize completed event: ", event.data)
-    print("Received image resize completed event: ", event.id)
+    print("event.data: ", event.data)
 
     firestore_client: google.cloud.firestore.Client = firestore.client()
+
+    # we can save this call by adding the user id to the metadata
     data = firestore_client.collection("users").where(filter=FieldFilter("stripeId", "==", event.data.get("customer"))).get()[0]
     print("reference: ", data)
 
-    try:
-        amount = int(data.get("balance"))
-    except:
-        amount = 0
-
     doc_ref = firestore_client.collection("users").document(data.get("uid"))
-    doc_ref.set({"balance": event.data.get("amount") + amount}, merge=True)
+    doc_ref.set({"balance": firestore.firestore.Increment(event.data.get("amount") )}, merge=True)
 
 
 #
@@ -114,21 +110,23 @@ def paymentSucceeded(event: eventarc_fn.CloudEvent) -> None:
 
 @firestore_fn.on_document_created(document="users/{userId}/books/{bookId}", region="europe-west1")
 def bookCreated(event: firestore_fn.Event[firestore_fn.DocumentSnapshot | None]) -> None:
-    """Listens for new documents to be added to /messages. If the document has
-    an "original" field, creates an "uppercase" field containg the contents of
-    "original" in upper case."""
 
-    # Get the value of "original" if it exists.
+
     if event.data is None:
         return
     try:
+        userId = event.params.get("userId");
         bookId = event.data.get("bookId")
         childName = event.data.get("childName")
         readerAge = event.data.get("readerAge")
         story = event.data.get("story")
     except KeyError:
-        # No "original" field, so do nothing.
         return
+    bookPrice = 20
+
+    firestore_client: google.cloud.firestore.Client = firestore.client()
+    doc_ref = firestore_client.collection("users").document(userId)
+    doc_ref.set({"balance": firestore.firestore.Increment(-bookPrice)}, merge=True)
 
     book = {
         "title": story,
