@@ -27,7 +27,7 @@ dependencies:
   animated_text_kit: ^4.2.2
   intl: ^0.18.0
   logger: ^2.1.0
-
+  firebase_remote_config: ^4.3.18
 
 dev_dependencies:
   flutter_test:

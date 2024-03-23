@@ -7,11 +7,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:sipur/top_level/remote_config_cubit.dart';
 
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit() : super(UserState.non()) {
+  late RemoteConfigCubit remoteConfigCubit;
+  UserCubit(this.remoteConfigCubit) : super(UserState.non()) {
     Stream<DocumentSnapshot>? userStream;
     StreamSubscription? streamSubscription;
 
@@ -39,7 +41,9 @@ class UserCubit extends Cubit<UserState> {
   }
 
   bool checkBalance() {
-    int bookPrice = 2000;
+    int bookPrice = remoteConfigCubit
+        .state.remoteConfig[RemoteConfigItems.bookPrice.name]!
+        .asInt();
     return (state.balance != null && state.balance! >= bookPrice);
   }
 }

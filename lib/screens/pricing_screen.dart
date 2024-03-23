@@ -28,11 +28,11 @@ class _PricingState extends State<PricingScreen> {
       body: CardWrapper(
         Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 44,
             ),
             if (widget.noFounds) ...[
-              Text(
+              const Text(
                   "You don't have enough funds to create this book, please top up"),
               ListTile(
                 textColor: Colors.black,
@@ -60,9 +60,9 @@ class _PricingState extends State<PricingScreen> {
                 },
               ),
             ],
-            Spacer(),
-            Text('Pricing Page'),
-            Spacer(),
+            const Spacer(),
+            const Text('Pricing Page'),
+            const Spacer(),
           ],
         ),
       ),

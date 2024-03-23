@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:sipur/top_level/remote_config_cubit.dart';
 import 'package:sipur/top_level/route_manager.dart';
 import 'package:sipur/top_level/user_cubit.dart';
 
@@ -27,14 +28,26 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   late GoRouter routerConfig = RouteManager().config();
+  late RemoteConfigCubit remoteConfigCubit;
+  late UserCubit userCubit;
+  late BooksCubit booksCubit;
+
+  @override
+  void initState() {
+    remoteConfigCubit = RemoteConfigCubit();
+    userCubit = UserCubit(remoteConfigCubit);
+    booksCubit = BooksCubit();
+    super.initState();
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => UserCubit()),
-        BlocProvider(create: (_) => BooksCubit()),
+        BlocProvider(create: (_) => userCubit),
+        BlocProvider(create: (_) => booksCubit),
+        BlocProvider(create: (_) => remoteConfigCubit),
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
