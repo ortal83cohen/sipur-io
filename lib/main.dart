@@ -54,7 +54,7 @@ class _MyAppState extends State<MyApp> {
         routerConfig: routerConfig,
         title: 'Sipur',
         theme: ThemeData(
-          sliderTheme: SliderThemeData(
+          sliderTheme: const SliderThemeData(
             showValueIndicator: ShowValueIndicator.always,
           ),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

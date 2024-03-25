@@ -16,8 +16,7 @@ abstract class UserState extends Equatable {
       this.balance, this.email, this.stripeId, this.stripeLink, this.uid);
 
   String getBalance() {
-    var format = NumberFormat.currency(locale: "en_DE", symbol: "€");
-    return "balance: ${format.format((balance ?? 0) / 100)}";
+    return "balance: ${kCurrency.format((balance ?? 0) / 100)}";
   }
 
   factory UserState.non() {

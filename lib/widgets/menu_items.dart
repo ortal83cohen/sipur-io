@@ -35,7 +35,7 @@ class MenuItems extends StatelessWidget {
           style: ListTileStyle.drawer,
           title: AutoSizeText(
             maxLines: 1,
-            'payment',
+            'Top up',
             style: Theme.of(context)
                 .textTheme
                 .headlineMedium!

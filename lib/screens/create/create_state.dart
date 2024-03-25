@@ -4,12 +4,14 @@ abstract class CreateState extends Equatable {
   final String bookId;
   final bool enoughFunds;
   final int pages;
+  final int finalPrice;
   final String childName;
   final String readerAge;
   final String story;
 
   @override
-  List<Object> get props => [childName, readerAge, story, pages, enoughFunds];
+  List<Object> get props =>
+      [childName, readerAge, story, pages, finalPrice, enoughFunds];
 
   static final List<String> readerAgeOptions = [
     "1-2",
@@ -52,8 +54,8 @@ abstract class CreateState extends Equatable {
     "The Nighttime Adventure of Little Dreamer"
   ];
 
-  const CreateState(this.bookId, this.pages, this.childName, this.readerAge,
-      this.story, this.enoughFunds);
+  const CreateState(this.bookId, this.pages, this.finalPrice, this.childName,
+      this.readerAge, this.story, this.enoughFunds);
 
   Map<String, dynamic> toMap() {
     return {
@@ -63,6 +65,7 @@ abstract class CreateState extends Equatable {
       'story': story,
       'requiredPages': pages,
       'enoughFunds': enoughFunds,
+      'finalPrice': finalPrice,
     };
   }
 
@@ -72,10 +75,12 @@ abstract class CreateState extends Equatable {
     String? readerAge,
     String? story,
     bool? enoughFunds,
+    int? finalPrice,
   }) {
     return CreateInitial(
       bookId,
       pages ?? this.pages,
+      finalPrice ?? this.finalPrice,
       childName ?? this.childName,
       readerAge ?? this.readerAge,
       story ?? this.story,
@@ -85,6 +90,6 @@ abstract class CreateState extends Equatable {
 }
 
 class CreateInitial extends CreateState {
-  const CreateInitial(super.bookId, super.pages, super.childName,
-      super.readerAge, super.story, super.enoughFunds);
+  const CreateInitial(super.bookId, super.pages, super.finalPrice,
+      super.childName, super.readerAge, super.story, super.enoughFunds);
 }

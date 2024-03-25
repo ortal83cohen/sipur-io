@@ -6,8 +6,9 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:sipur/top_level/remote_config_cubit.dart';
+
+import '../screens/k.dart';
 
 part 'user_state.dart';
 
@@ -38,14 +39,6 @@ class UserCubit extends Cubit<UserState> {
         streamSubscription?.onError((e, s) {});
       }
     });
-  }
-
-  bool checkBalance(int numberOfPages) {
-    int pagePrice = remoteConfigCubit
-        .state.remoteConfig[RemoteConfigItems.pagePrice.name]!
-        .asInt();
-    return (state.balance != null &&
-        state.balance! >= (pagePrice * numberOfPages));
   }
 }
 

@@ -29,15 +29,21 @@ class _PricingState extends State<PricingScreen> {
         Column(
           children: [
             const SizedBox(
+              height: 16,
+            ),
+            Text(
+              'Pricing',
+              style: Theme.of(context).textTheme.displayMedium,
+            ),
+            const SizedBox(
               height: 44,
             ),
             if (widget.noFounds) ...[
               const Text(
                   "You don't have enough funds to create this book, please top up"),
             ],
-            Price(),
+            const Price(),
             const Spacer(),
-            const Text('Pricing Page'),
             const Spacer(),
           ],
         ),
@@ -58,30 +64,39 @@ class Price extends StatelessWidget {
         height: 555,
         width: 555,
         color: Colors.cyan,
-        child: ListTile(
-          textColor: Colors.black,
-          style: ListTileStyle.drawer,
-          title: AutoSizeText(
-            maxLines: 1,
-            'payment',
-            style: Theme.of(context)
-                .textTheme
-                .headlineMedium!
-                .copyWith(color: Colors.black),
-          ),
-          subtitle: AutoSizeText(
-            maxLines: 1,
-            context.watch<UserCubit>().state.getBalance(),
-            style: Theme.of(context)
-                .textTheme
-                .bodySmall!
-                .copyWith(color: Colors.black),
-          ),
-          onTap: () async {
-            context.push(
-              "${RouteManager.console}\\${RouteManager.payment}",
-            );
-          },
+        child: Column(
+          children: [
+            Text('You can top up how many and many times as you want'),
+            Text('* One page costs 1 euro, and you can choose book sizes 1-30'),
+            Text(
+                '* Generate and ounload the book as PDF costs 3 euros, you can print it yourself'),
+            Text('* Deliver the printed book can cost 8-12 euro'),
+            ListTile(
+              textColor: Colors.black,
+              style: ListTileStyle.drawer,
+              title: AutoSizeText(
+                maxLines: 1,
+                'Top up',
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineMedium!
+                    .copyWith(color: Colors.black),
+              ),
+              subtitle: AutoSizeText(
+                maxLines: 1,
+                context.watch<UserCubit>().state.getBalance(),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(color: Colors.black),
+              ),
+              onTap: () async {
+                context.push(
+                  "${RouteManager.console}\\${RouteManager.payment}",
+                );
+              },
+            )
+          ],
         ));
   }
 }
