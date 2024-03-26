@@ -62,15 +62,21 @@ class Price extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         height: 555,
-        width: 555,
+        width: 650,
         color: Colors.cyan,
         child: Column(
           children: [
-            Text('You can top up how many and many times as you want'),
-            Text('* One page costs 1 euro, and you can choose book sizes 1-30'),
+            Text('You can top up as much and many times as you like'),
             Text(
-                '* Generate and ounload the book as PDF costs 3 euros, you can print it yourself'),
-            Text('* Deliver the printed book can cost 8-12 euro'),
+                '* One page costs 1 euro, and you can choose to create a 1-30 page book'),
+            Text(
+                '* Generating and downloading your book as PDF costs 3 euros, this way, you can print it yourself'),
+            Text(
+                '* Having a printed book delivered to you costs between 8-12 euros'),
+            Text(' notes:'),
+            Text('* Own the rights to your stories & images'),
+            Text('* Phone mode: Display and read from your phone/tablet'),
+            Text('* Customer support'),
             ListTile(
               textColor: Colors.black,
               style: ListTileStyle.drawer,
